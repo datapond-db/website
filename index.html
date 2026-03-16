@@ -708,6 +708,9 @@
         card.className = 'card';
 
         var linksHtml = '';
+        if (db.dictionary_url) {
+          linksHtml += '<a href="' + db.dictionary_url + '" target="_blank" rel="noopener">Data Dictionary</a>';
+        }
         if (db.github) {
           linksHtml += '<a href="' + db.github + '" target="_blank" rel="noopener">GitHub</a>';
         }
