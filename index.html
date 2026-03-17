@@ -259,6 +259,12 @@
     .card-source {
       font-size: 0.8rem;
       color: #8b949e;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-coverage {
+      font-size: 0.8rem;
+      color: #8b949e;
       margin-bottom: 0.75rem;
     }
 
@@ -697,6 +703,16 @@
         highlightPython("datapond.download('eoir')");
     }
 
+    // --- Format last_rebuilt date as "Mon YYYY" ---
+    function formatRebuilt(dateStr) {
+      if (!dateStr) return '--';
+      var parts = dateStr.split('-');
+      if (parts.length < 2) return dateStr;
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var m = parseInt(parts[1], 10);
+      return months[m - 1] + ' ' + parts[0];
+    }
+
     // --- Render database cards ---
     function renderCards(databases) {
       var container = document.getElementById('cards-container');
@@ -731,6 +747,7 @@
             '<div class="card-stat"><span class="card-stat-value">' + sizeDisplay + '</span><span class="card-stat-label">size</span></div>' +
           '</div>' +
           '<div class="card-source">Source: ' + escapeHtml(db.source || '') + '</div>' +
+          '<div class="card-coverage">Coverage: ' + escapeHtml(db.data_date_range || '--') + ' · Last rebuilt: ' + formatRebuilt(db.last_rebuilt) + ' · Updates: ' + escapeHtml(db.update_frequency || '--') + '</div>' +
           '<div class="card-code">' + highlightPython("con = datapond.connect('" + db.id + "')") + '</div>' +
           '<div class="card-links">' + linksHtml + '</div>';
 
