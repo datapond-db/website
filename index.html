@@ -501,9 +501,6 @@
         </div>
       </div>
 
-      <div class="code-block-wrapper">
-        <div class="code-block" id="hero-example"></div>
-      </div>
     </div>
   </section>
 
@@ -544,6 +541,13 @@
           <div class="step-content">
             <div class="step-label">Or download for full speed</div>
             <div class="step-code" id="step-download"></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <div class="step-label">Use plain SQL for anything</div>
+            <div class="step-code" id="step-sql"></div>
           </div>
         </div>
       </div>
@@ -679,20 +683,16 @@
       return n.toString();
     }
 
-    // --- Render hero code example ---
-    function renderHeroExample() {
-      var code = "import datapond\n\ncon = datapond.connect('fec')\ncon.sql(\"SELECT * FROM candidates LIMIT 5\").show()";
-      document.getElementById('hero-example').innerHTML = highlightPython(code);
-    }
-
     // --- Render getting started steps ---
     function renderSteps() {
       document.getElementById('step-install').innerHTML =
         highlightPython("pip install datapond");
       document.getElementById('step-connect').innerHTML =
-        highlightPython("con = datapond.connect('eoir')\ncon.sql(\"SELECT * FROM proceedings LIMIT 5\").show()");
+        highlightPython("import datapond\n\ncon = datapond.connect('eoir')\ncon.sql(\"SELECT * FROM proceedings LIMIT 5\").show()");
       document.getElementById('step-download').innerHTML =
         highlightPython("datapond.download('eoir')\ncon = datapond.connect('eoir', local=True)");
+      document.getElementById('step-sql').innerHTML =
+        highlightPython("con.sql(\"SELECT judge, COUNT(*) as n FROM hearings GROUP BY 1 ORDER BY 2 DESC LIMIT 10\").show()");
     }
 
     // --- Format last_rebuilt date as "Mon YYYY" ---
@@ -786,7 +786,6 @@
 
     // --- Fetch registry and render ---
     function init() {
-      renderHeroExample();
       renderSteps();
 
       var REGISTRY_URL = 'https://raw.githubusercontent.com/datapond-db/registry/main/registry.json';
