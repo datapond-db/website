@@ -523,6 +523,7 @@
   <section class="getting-started" id="getting-started">
     <div class="container">
       <h2>Getting Started</h2>
+      <p style="color: #8b949e; margin-bottom: 1.5rem; max-width: 700px;">Every database can be queried remotely in seconds with no download required, or downloaded locally for full speed.</p>
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
@@ -534,21 +535,14 @@
         <div class="step">
           <div class="step-number">2</div>
           <div class="step-content">
-            <div class="step-label">Connect</div>
+            <div class="step-label">Query remotely (no download)</div>
             <div class="step-code" id="step-connect"></div>
           </div>
         </div>
         <div class="step">
           <div class="step-number">3</div>
           <div class="step-content">
-            <div class="step-label">Query</div>
-            <div class="step-code" id="step-query"></div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <div class="step-label">Download locally</div>
+            <div class="step-label">Or download for full speed</div>
             <div class="step-code" id="step-download"></div>
           </div>
         </div>
@@ -696,11 +690,9 @@
       document.getElementById('step-install').innerHTML =
         highlightPython("pip install datapond");
       document.getElementById('step-connect').innerHTML =
-        highlightPython("con = datapond.connect('eoir')");
-      document.getElementById('step-query').innerHTML =
-        highlightPython("con.sql(\"SELECT * FROM proceedings LIMIT 5\").show()");
+        highlightPython("con = datapond.connect('eoir')\ncon.sql(\"SELECT * FROM proceedings LIMIT 5\").show()");
       document.getElementById('step-download').innerHTML =
-        highlightPython("datapond.download('eoir')");
+        highlightPython("datapond.download('eoir')\ncon = datapond.connect('eoir', local=True)");
     }
 
     // --- Format last_rebuilt date as "Mon YYYY" ---
