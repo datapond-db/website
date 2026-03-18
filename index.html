@@ -496,7 +496,7 @@
 
       <div class="code-block-wrapper">
         <div class="code-block install-block">
-          <code>pip install datapond</code>
+          <code>uv pip install datapond</code>
           <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
         </div>
       </div>
@@ -561,12 +561,10 @@
       <p>datapond is open for new databases from any public data source. If you have a dataset that would be useful as a queryable DuckDB database, we would love to include it.</p>
       <ul>
         <li>SEC EDGAR</li>
-        <li>CMS Medicare</li>
         <li>Census ACS</li>
         <li>BLS</li>
         <li>EPA</li>
         <li>USDA</li>
-        <li>NIH ClinicalTrials</li>
         <li>DOT</li>
         <li>NOAA</li>
       </ul>
@@ -665,7 +663,7 @@
 
     // --- Copy button ---
     function copyInstall(btn) {
-      navigator.clipboard.writeText('pip install datapond').then(function() {
+      navigator.clipboard.writeText('uv pip install datapond').then(function() {
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
         setTimeout(function() {
@@ -686,7 +684,7 @@
     // --- Render getting started steps ---
     function renderSteps() {
       document.getElementById('step-install').innerHTML =
-        highlightPython("pip install datapond");
+        highlightPython("uv pip install datapond");
       document.getElementById('step-connect').innerHTML =
         highlightPython("import datapond\n\ncon = datapond.connect('eoir')\ncon.sql(\"SELECT * FROM proceedings LIMIT 5\").show()");
       document.getElementById('step-download').innerHTML =
