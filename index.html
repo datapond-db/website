@@ -469,6 +469,7 @@
         <a href="#getting-started">Get Started</a>
         <a href="https://github.com/datapond-db" target="_blank" rel="noopener">GitHub</a>
         <a href="https://pypi.org/project/datapond" target="_blank" rel="noopener">PyPI</a>
+        <a href="https://github.com/datapond-db/datapond-r" target="_blank" rel="noopener">R package</a>
       </nav>
     </div>
   </header>
@@ -544,6 +545,10 @@
     <div class="container">
       <h2>Getting Started</h2>
       <p style="color: #8b949e; margin-bottom: 1.5rem; max-width: 700px;">Every database can be queried remotely in seconds with no full download (DuckDB fetches only the byte ranges your query needs), or downloaded locally for full speed.</p>
+      <div class="lang-tabs" role="tablist" style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+        <button class="lang-tab active" data-lang="python" onclick="setLang('python')" style="background:#21262d; color:#c9d1d9; border:1px solid #30363d; border-radius:6px; padding:0.35rem 0.9rem; cursor:pointer; font-size:0.9rem;">Python</button>
+        <button class="lang-tab" data-lang="r" onclick="setLang('r')" style="background:#21262d; color:#c9d1d9; border:1px solid #30363d; border-radius:6px; padding:0.35rem 0.9rem; cursor:pointer; font-size:0.9rem;">R</button>
+      </div>
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
@@ -607,6 +612,7 @@
         <div class="footer-links" id="footer-links">
           <a href="https://github.com/datapond-db" target="_blank" rel="noopener">GitHub</a>
           <a href="https://pypi.org/project/datapond" target="_blank" rel="noopener">PyPI</a>
+          <a href="https://github.com/datapond-db/datapond-r" target="_blank" rel="noopener">R package</a>
         </div>
         <div class="footer-meta">
           <span>Built with DuckDB</span>
@@ -716,16 +722,55 @@
       return n.toString();
     }
 
-    // --- Render getting started steps ---
-    function renderSteps() {
-      document.getElementById('step-install').innerHTML =
-        highlightPython("uv pip install datapond");
-      document.getElementById('step-connect').innerHTML =
-        highlightPython("import datapond\n\ncon = datapond.connect('eoir')\ncon.sql(\"SELECT * FROM proceedings LIMIT 5\").show()");
-      document.getElementById('step-download').innerHTML =
-        highlightPython("datapond.download('eoir')\ncon = datapond.connect('eoir', local=True)");
-      document.getElementById('step-sql').innerHTML =
-        highlightPython("con.sql(\"SELECT judge_name, COUNT(*) AS n FROM v_proceedings_full WHERE judge_name IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 10\").show()");
+    // --- Render getting started steps (Python or R) ---
+    var SNIPPETS = {
+      python: {
+        install: "uv pip install datapond",
+        connect: "import datapond\n\ncon = datapond.connect('eoir')\ncon.sql(\"SELECT * FROM proceedings LIMIT 5\").show()",
+        download: "datapond.download('eoir')\ncon = datapond.connect('eoir', local=True)",
+        sql: "con.sql(\"SELECT judge_name, COUNT(*) AS n FROM v_proceedings_full WHERE judge_name IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 10\").show()"
+      },
+      r: {
+        install: "pak::pak('datapond-db/datapond-r')",
+        connect: "library(datapond)\n\ncon <- dp_connect('eoir')\nDBI::dbGetQuery(con, \"SELECT * FROM proceedings LIMIT 5\")",
+        download: "dp_download('eoir')\ncon <- dp_connect('eoir', local = TRUE)",
+        sql: "DBI::dbGetQuery(con, \"SELECT judge_name, COUNT(*) AS n FROM v_proceedings_full WHERE judge_name IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 10\")"
+      }
+    };
+    var CURRENT_LANG = 'python';
+    try { CURRENT_LANG = localStorage.getItem('datapond-lang') || 'python'; } catch (e) {}
+
+    function renderSteps(lang) {
+      lang = lang || CURRENT_LANG;
+      var s = SNIPPETS[lang] || SNIPPETS.python;
+      var hl = lang === 'r' ? highlightR : highlightPython;
+      document.getElementById('step-install').innerHTML = hl(s.install);
+      document.getElementById('step-connect').innerHTML = hl(s.connect);
+      document.getElementById('step-download').innerHTML = hl(s.download);
+      document.getElementById('step-sql').innerHTML = hl(s.sql);
+      var tabs = document.querySelectorAll('.lang-tab');
+      for (var i = 0; i < tabs.length; i++) {
+        var on = tabs[i].getAttribute('data-lang') === lang;
+        tabs[i].classList.toggle('active', on);
+        tabs[i].style.background = on ? '#30363d' : '#21262d';
+        tabs[i].style.color = on ? '#fff' : '#c9d1d9';
+      }
+    }
+
+    function setLang(lang) {
+      CURRENT_LANG = lang;
+      try { localStorage.setItem('datapond-lang', lang); } catch (e) {}
+      renderSteps(lang);
+    }
+
+    // R keyword highlighting reuses the Python tokenizer with an R keyword list.
+    var R_KEYWORDS = ['library', 'function', 'TRUE', 'FALSE', 'NULL', 'if', 'else', 'for', 'in', 'return'];
+    function highlightR(code) {
+      var saved = PY_KEYWORDS;
+      PY_KEYWORDS = R_KEYWORDS;
+      var out = highlightPython(code);
+      PY_KEYWORDS = saved;
+      return out;
     }
 
     // --- Format last_rebuilt date as "Mon YYYY" ---
