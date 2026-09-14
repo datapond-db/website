@@ -524,13 +524,15 @@
         <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">July 6, 2026</div>
         <div style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">Full refresh + data-quality audit of all databases</div>
         <p style="color: #8b949e; font-size: 0.95rem; margin: 0;">
-          Every database was rebuilt from its latest source (ICE gains a new
-          encounters table and the 2026 FOIA release; CMS Medicare adds CY2024;
-          FEC covers the 2026 cycle), then independently audited from a
+          Every existing database was rebuilt from its latest source (ICE gains
+          a new encounters table and the 2026 FOIA release; CMS Medicare adds
+          CY2024; FEC covers the 2026 cycle), then independently audited from a
           researcher's perspective and repaired — including fixes to views,
           lookups, and column typing that affected published-number accuracy.
-          Each README now carries a researcher-caveats section, and every
-          HuggingFace dataset page includes the changelog.
+          Two databases were added the next day: CMS Open Payments (172.5M rows)
+          and DOL H-1B/PERM visa disclosures (8.5M rows). Each README now
+          carries a researcher-caveats section, and every HuggingFace dataset
+          page includes the changelog.
           <a href="https://github.com/datapond-db/registry/blob/main/CHANGELOG.md" target="_blank" rel="noopener" style="color: #58a6ff;">Full changelog →</a>
         </p>
       </div>
@@ -541,7 +543,7 @@
   <section class="getting-started" id="getting-started">
     <div class="container">
       <h2>Getting Started</h2>
-      <p style="color: #8b949e; margin-bottom: 1.5rem; max-width: 700px;">Every database can be queried remotely in seconds with no download required, or downloaded locally for full speed.</p>
+      <p style="color: #8b949e; margin-bottom: 1.5rem; max-width: 700px;">Every database can be queried remotely in seconds with no full download (DuckDB fetches only the byte ranges your query needs), or downloaded locally for full speed.</p>
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
@@ -553,7 +555,7 @@
         <div class="step">
           <div class="step-number">2</div>
           <div class="step-content">
-            <div class="step-label">Query remotely (no download)</div>
+            <div class="step-label">Query remotely (no full download)</div>
             <div class="step-code" id="step-connect"></div>
           </div>
         </div>
@@ -588,6 +590,11 @@
         <li>USDA</li>
         <li>DOT</li>
         <li>NOAA</li>
+        <li>USPTO</li>
+        <li>FDIC</li>
+        <li>HUD</li>
+        <li>NHTSA</li>
+        <li>FBI UCR</li>
       </ul>
       <a class="contrib-link" href="https://github.com/datapond-db/registry/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Read the contributing guide</a>
     </div>
@@ -605,6 +612,13 @@
           <span>Built with DuckDB</span>
           <span>MIT License</span>
         </div>
+      </div>
+      <div class="footer-credits" style="color: #8b949e; font-size: 0.85rem; margin-top: 1rem; line-height: 1.6;">
+        Built and maintained by <a href="https://github.com/ian-nason" target="_blank" rel="noopener" style="color: #58a6ff;">Ian Nason</a>
+        (registry, Python client, website, and the EOIR, ICE, FEC, ClinicalTrials, CMS Medicare, Open Payments, and DOL visa databases).
+        IPEDS database by <a href="https://github.com/paulgp" target="_blank" rel="noopener" style="color: #58a6ff;">Paul Goldsmith-Pinkham</a>.
+        Each card shows its maintainer; see the
+        <a href="https://github.com/datapond-db/registry#contributors" target="_blank" rel="noopener" style="color: #58a6ff;">contributors list</a>.
       </div>
     </div>
   </footer>
@@ -711,7 +725,7 @@
       document.getElementById('step-download').innerHTML =
         highlightPython("datapond.download('eoir')\ncon = datapond.connect('eoir', local=True)");
       document.getElementById('step-sql').innerHTML =
-        highlightPython("con.sql(\"SELECT judge, COUNT(*) as n FROM hearings GROUP BY 1 ORDER BY 2 DESC LIMIT 10\").show()");
+        highlightPython("con.sql(\"SELECT judge_name, COUNT(*) AS n FROM v_proceedings_full WHERE judge_name IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 10\").show()");
     }
 
     // --- Format last_rebuilt date as "Mon YYYY" ---
@@ -757,7 +771,7 @@
             '<div class="card-stat"><span class="card-stat-value">' + tableCount + '</span><span class="card-stat-label">tables</span></div>' +
             '<div class="card-stat"><span class="card-stat-value">' + sizeDisplay + '</span><span class="card-stat-label">size</span></div>' +
           '</div>' +
-          '<div class="card-source">Source: ' + escapeHtml(db.source || '') + '</div>' +
+          '<div class="card-source">Source: ' + escapeHtml(db.source || '') + (db.maintainer ? ' · Maintainer: ' + escapeHtml(db.maintainer) : '') + '</div>' +
           '<div class="card-coverage">Coverage: ' + escapeHtml(db.data_date_range || '--') + ' · Last rebuilt: ' + formatRebuilt(db.last_rebuilt) + ' · Updates: ' + escapeHtml(db.update_frequency || '--') + '</div>' +
           '<div class="card-code">' + highlightPython("con = datapond.connect('" + db.id + "')") + '</div>' +
           '<div class="card-links">' + linksHtml + '</div>';
