@@ -521,6 +521,23 @@
   <section class="updates-section" id="updates">
     <div class="container">
       <h2>Updates</h2>
+      <div style="border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem 1.5rem; max-width: 800px; margin-bottom: 1rem;">
+        <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">September 14, 2026</div>
+        <div style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">September refresh + R package</div>
+        <p style="color: #8b949e; font-size: 0.95rem; margin: 0;">
+          Five databases rebuilt from their latest sources: immigration courts
+          through the August 2026 DOJ file (173M rows), ICE enforcement through
+          August 6 from the Deportation Data Project's new release (23.6M rows,
+          with a new arrest city field), ClinicalTrials.gov as of September 14
+          (59M rows), DOL H-1B/PERM through FY2026 Q3 (with a fix for date
+          columns that had been empty), and FEC campaign finance through the
+          current 2026 cycle (355M rows). The July audit's repairs now run as
+          regression checks inside every build. New:
+          <a href="https://github.com/datapond-db/datapond-r" target="_blank" rel="noopener" style="color: #58a6ff;">an R package</a>
+          with the same API as the Python client, and datapond 0.1.3 on PyPI.
+          <a href="https://github.com/datapond-db/registry/blob/main/CHANGELOG.md" target="_blank" rel="noopener" style="color: #58a6ff;">Full changelog →</a>
+        </p>
+      </div>
       <div style="border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem 1.5rem; max-width: 800px;">
         <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">July 6, 2026</div>
         <div style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">Full refresh + data-quality audit of all databases</div>
