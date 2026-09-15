@@ -522,6 +522,26 @@
     <div class="container">
       <h2>Updates</h2>
       <div style="border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem 1.5rem; max-width: 800px; margin-bottom: 1rem;">
+        <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">September 15, 2026</div>
+        <div style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">Three new legal-system databases: federal courts, border enforcement, sentencing</div>
+        <p style="color: #8b949e; font-size: 0.95rem; margin: 0;">
+          <strong style="color: #c9d1d9;">fjc</strong>: the Federal Judicial Center's Integrated
+          Database, every federal civil case since 1988, criminal defendant since FY1970 and
+          appeal since 1971 (21.1M rows), with the two file eras unioned and invalid source dates
+          audited rather than silently dropped.
+          <strong style="color: #c9d1d9;">cbp</strong>: the Deportation Data Project's CBP FOIA
+          releases, Border Patrol apprehensions, encounters, port-of-entry inadmissibles, Title 42
+          expulsions and CBP One (51.3M rows), 121 differently-shaped spreadsheets harmonised into
+          one schema per record type with every source file documented.
+          <strong style="color: #c9d1d9;">ussc</strong>: the U.S. Sentencing Commission's individual
+          offender datafiles, every federal defendant sentenced FY2002-FY2025 (1.72M
+          defendants, 14.0M rows), reshaped from a 22,000-variable fixed-width record into a
+          sentences table plus long tables per count, guideline computation, drug type and departure reason.
+          Each ships with a data dictionary, researcher caveats, and works from Python and R today.
+          <a href="https://github.com/datapond-db/registry/blob/main/CHANGELOG.md" target="_blank" rel="noopener" style="color: #58a6ff;">Full changelog →</a>
+        </p>
+      </div>
+      <div style="border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem 1.5rem; max-width: 800px; margin-bottom: 1rem;">
         <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">September 14, 2026</div>
         <div style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">September refresh + R package</div>
         <p style="color: #8b949e; font-size: 0.95rem; margin: 0;">
