@@ -850,7 +850,7 @@
           linksHtml += '<a href="' + db.huggingface + '" target="_blank" rel="noopener">Hugging Face</a>';
         }
 
-        var sizeDisplay = db.size_gb ? db.size_gb + ' GB' : '--';
+        var sizeDisplay = (db.size_gb == null) ? '--' : (db.size_gb < 0.1 ? Math.round(db.size_gb * 1024) + ' MB' : db.size_gb + ' GB');
         var rowCount = db.rows ? formatRows(db.rows) : '--';
         var tableCount = db.tables || '--';
 
