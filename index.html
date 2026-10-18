@@ -204,11 +204,12 @@
 
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.25rem;
     }
 
     .card {
+      scroll-margin-top: 1rem;
       background: #161b22;
       border: 1px solid #30363d;
       border-left: 3px solid #2dd4bf;
@@ -278,10 +279,12 @@
       color: #e6edf3;
       margin-bottom: 0.75rem;
       overflow-x: auto;
+      white-space: pre;
     }
 
     .card-links {
       display: flex;
+      flex-wrap: wrap;
       gap: 1rem;
     }
 
@@ -309,6 +312,7 @@
 
     .steps {
       display: grid;
+      grid-template-columns: minmax(0, 1fr);
       gap: 1.25rem;
       max-width: 700px;
     }
@@ -348,6 +352,7 @@
     }
 
     .step-code {
+      white-space: pre;
       background: #161b22;
       border: 1px solid #30363d;
       border-radius: 6px;
@@ -427,6 +432,11 @@
 
     /* ---- RESPONSIVE ---- */
     @media (max-width: 768px) {
+      header .container { flex-wrap: wrap; gap: 0.75rem; }
+      header nav { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; }
+      header nav a { margin-left: 0; }
+      .card { min-width: 0; }
+
       .hero h1 {
         font-size: 1.75rem;
       }
@@ -467,6 +477,7 @@
       <nav>
         <a href="#databases">Databases</a>
         <a href="#getting-started">Get Started</a>
+        <a href="#updates">Updates</a>
         <a href="https://github.com/datapond-db" target="_blank" rel="noopener">GitHub</a>
         <a href="https://pypi.org/project/datapond" target="_blank" rel="noopener">PyPI</a>
         <a href="https://CRAN.R-project.org/package=datapond" target="_blank" rel="noopener">R package (CRAN)</a>
@@ -521,6 +532,17 @@
   <section class="updates-section" id="updates">
     <div class="container">
       <h2>Updates</h2>
+      <div style="border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem 1.5rem; max-width: 800px; margin-bottom: 1rem;">
+  <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">October 18, 2026</div>
+  <div style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">Three new databases on Hugging Face: occupations, employment and wages, fatal crashes</div>
+  <p style="color: #8b949e; font-size: 0.95rem; margin: 0 0 0.8rem;">
+    <a href="https://huggingface.co/datasets/Nason/onet-database" target="_blank" rel="noopener" style="color: #58a6ff;">O*NET 31.0</a>: occupations, skills and work context, with scale references and precision flags (468,857 rows; CC BY 4.0).
+    <a href="https://huggingface.co/datasets/Nason/qcew-database" target="_blank" rel="noopener" style="color: #58a6ff;">QCEW 2025 annual</a>: covered employment and wages, with all disclosure flags and a suppression-aware view (3.1M rows; BLS public domain).
+    <a href="https://huggingface.co/datasets/Nason/fars-database" target="_blank" rel="noopener" style="color: #58a6ff;">FARS 2024</a>: the first Annual Report File, with 36,297 fatal crashes and views that aggregate people and vehicles before joining.
+  </p>
+  <p style="color: #8b949e; font-size: 0.95rem; margin: 0 0 0.8rem;">Each page includes Python, R and SQL examples, links to table and field dictionaries, researcher caveats, source provenance and a changelog. The pinned public artifacts have been checked against their sources and queried from Python and R.</p>
+  <p style="color: #8b949e; font-size: 0.95rem; margin: 0;">Query them now using the direct URLs on their dataset pages. <strong style="color: #c9d1d9;">Catalog integration is pending:</strong> their registry entries are draft pull requests. The cards and normal package discovery will include them after those entries are merged.</p>
+</div>
       <div style="border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem 1.5rem; max-width: 800px; margin-bottom: 1rem;">
         <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">September 17, 2026</div>
         <div style="color: #fff; font-weight: 600; margin-bottom: 0.5rem;">Two national databases: police stops and the federal judiciary</div>
@@ -607,7 +629,7 @@
     <div class="container">
       <h2>Getting Started</h2>
       <p style="color: #8b949e; margin-bottom: 1.5rem; max-width: 700px;">Every database can be queried remotely in seconds with no full download (DuckDB fetches only the byte ranges your query needs), or downloaded locally for full speed.</p>
-      <div class="lang-tabs" role="tablist" style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+      <div class="lang-tabs" role="group" aria-label="Example language" style="display:flex; gap:0.5rem; margin-bottom:1rem;">
         <button class="lang-tab active" data-lang="python" onclick="setLang('python')" style="background:#21262d; color:#c9d1d9; border:1px solid #30363d; border-radius:6px; padding:0.35rem 0.9rem; cursor:pointer; font-size:0.9rem;">Python</button>
         <button class="lang-tab" data-lang="r" onclick="setLang('r')" style="background:#21262d; color:#c9d1d9; border:1px solid #30363d; border-radius:6px; padding:0.35rem 0.9rem; cursor:pointer; font-size:0.9rem;">R</button>
       </div>
@@ -766,7 +788,7 @@
 
     // --- Copy button ---
     function copyInstall(btn) {
-      navigator.clipboard.writeText('uv pip install datapond').then(function() {
+      navigator.clipboard.writeText(SNIPPETS[CURRENT_LANG].install).then(function() {
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
         setTimeout(function() {
@@ -800,7 +822,8 @@
       }
     };
     var CURRENT_LANG = 'python';
-    try { CURRENT_LANG = localStorage.getItem('datapond-lang') || 'python'; } catch (e) {}
+    try { CURRENT_LANG = localStorage.getItem('datapond-lang') === 'r' ? 'r' : 'python'; } catch (e) {}
+    var CURRENT_DATABASES = [];
 
     function renderSteps(lang) {
       lang = lang || CURRENT_LANG;
@@ -810,19 +833,23 @@
       document.getElementById('step-connect').innerHTML = hl(s.connect);
       document.getElementById('step-download').innerHTML = hl(s.download);
       document.getElementById('step-sql').innerHTML = hl(s.sql);
+      document.querySelector('.install-block code').innerHTML = hl(s.install);
       var tabs = document.querySelectorAll('.lang-tab');
       for (var i = 0; i < tabs.length; i++) {
         var on = tabs[i].getAttribute('data-lang') === lang;
         tabs[i].classList.toggle('active', on);
+        tabs[i].setAttribute('aria-pressed', String(on));
         tabs[i].style.background = on ? '#30363d' : '#21262d';
         tabs[i].style.color = on ? '#fff' : '#c9d1d9';
       }
     }
 
     function setLang(lang) {
+      lang = lang === 'r' ? 'r' : 'python';
       CURRENT_LANG = lang;
       try { localStorage.setItem('datapond-lang', lang); } catch (e) {}
       renderSteps(lang);
+      if (CURRENT_DATABASES.length) renderCards(CURRENT_DATABASES);
     }
 
     // R keyword highlighting reuses the Python tokenizer with an R keyword list.
@@ -854,6 +881,7 @@
       databases.forEach(function(db) {
         var card = document.createElement('div');
         card.className = 'card';
+        card.id = 'db-' + db.id;
 
         var linksHtml = '';
         if (db.dictionary_url) {
@@ -866,12 +894,12 @@
           linksHtml += '<a href="' + db.huggingface + '" target="_blank" rel="noopener">Hugging Face</a>';
         }
 
-        var sizeDisplay = (db.size_gb == null) ? '--' : (db.size_gb < 0.1 ? Math.round(db.size_gb * 1024) + ' MB' : db.size_gb + ' GB');
+        var sizeDisplay = (db.size_gb == null) ? '--' : (db.size_gb < 1 ? (db.size_gb * 1000).toFixed(1) + ' MB' : db.size_gb + ' GB');
         var rowCount = db.rows ? formatRows(db.rows) : '--';
         var tableCount = db.tables || '--';
 
         card.innerHTML =
-          '<div class="card-name">' + escapeHtml(db.name) + '</div>' +
+          '<h3 class="card-name">' + escapeHtml(db.name) + '</h3>' +
           '<div class="card-description">' + escapeHtml(db.description || '') + '</div>' +
           '<div class="card-stats">' +
             '<div class="card-stat"><span class="card-stat-value">' + rowCount + '</span><span class="card-stat-label">rows</span></div>' +
@@ -880,7 +908,7 @@
           '</div>' +
           '<div class="card-source">Source: ' + escapeHtml(db.source || '') + (db.maintainer ? ' · Maintainer: ' + escapeHtml(db.maintainer) : '') + '</div>' +
           '<div class="card-coverage">Coverage: ' + escapeHtml(db.data_date_range || '--') + ' · Last rebuilt: ' + formatRebuilt(db.last_rebuilt) + ' · Updates: ' + escapeHtml(db.update_frequency || '--') + '</div>' +
-          '<div class="card-code">' + highlightPython("con = datapond.connect('" + db.id + "')") + '</div>' +
+          '<div class="card-code">' + (CURRENT_LANG === 'r' ? highlightR("con <- dp_connect('" + db.id + "')") : highlightPython("con = datapond.connect('" + db.id + "')")) + '</div>' +
           '<div class="card-links">' + linksHtml + '</div>';
 
         grid.appendChild(card);
@@ -940,6 +968,7 @@
           if (!Array.isArray(databases)) {
             databases = Object.values(databases);
           }
+          CURRENT_DATABASES = databases;
           updateStats(databases);
           renderCards(databases);
           updateFooterLinks(databases);
