@@ -469,7 +469,7 @@
         <a href="#getting-started">Get Started</a>
         <a href="https://github.com/datapond-db" target="_blank" rel="noopener">GitHub</a>
         <a href="https://pypi.org/project/datapond" target="_blank" rel="noopener">PyPI</a>
-        <a href="https://github.com/datapond-db/datapond-r" target="_blank" rel="noopener">R package</a>
+        <a href="https://CRAN.R-project.org/package=datapond" target="_blank" rel="noopener">R package (CRAN)</a>
       </nav>
     </div>
   </header>
@@ -674,7 +674,7 @@
         <div class="footer-links" id="footer-links">
           <a href="https://github.com/datapond-db" target="_blank" rel="noopener">GitHub</a>
           <a href="https://pypi.org/project/datapond" target="_blank" rel="noopener">PyPI</a>
-          <a href="https://github.com/datapond-db/datapond-r" target="_blank" rel="noopener">R package</a>
+          <a href="https://CRAN.R-project.org/package=datapond" target="_blank" rel="noopener">R package (CRAN)</a>
         </div>
         <div class="footer-meta">
           <span>Built with DuckDB</span>
@@ -793,7 +793,7 @@
         sql: "con.sql(\"SELECT judge_name, COUNT(*) AS n FROM v_proceedings_full WHERE judge_name IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 10\").show()"
       },
       r: {
-        install: "pak::pak('datapond-db/datapond-r')",
+        install: "install.packages('datapond')",
         connect: "library(datapond)\n\ncon <- dp_connect('eoir')\nDBI::dbGetQuery(con, \"SELECT * FROM proceedings LIMIT 5\")",
         download: "dp_download('eoir')\ncon <- dp_connect('eoir', local = TRUE)",
         sql: "DBI::dbGetQuery(con, \"SELECT judge_name, COUNT(*) AS n FROM v_proceedings_full WHERE judge_name IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 10\")"
