@@ -541,7 +541,7 @@
     <a href="https://huggingface.co/datasets/Nason/fars-database" target="_blank" rel="noopener" style="color: #58a6ff;">FARS 2024</a>: the first Annual Report File, with 36,297 fatal crashes and views that aggregate people and vehicles before joining.
   </p>
   <p style="color: #8b949e; font-size: 0.95rem; margin: 0 0 0.8rem;">Each page includes Python, R and SQL examples, links to table and field dictionaries, researcher caveats, source provenance and a changelog. The pinned public artifacts have been checked against their sources and queried from Python and R.</p>
-  <p style="color: #8b949e; font-size: 0.95rem; margin: 0;">Query them now using the direct URLs on their dataset pages. <strong style="color: #c9d1d9;">Catalog integration is pending:</strong> their registry entries are draft pull requests. The cards and normal package discovery will include them after those entries are merged.</p>
+  <p style="color: #8b949e; font-size: 0.95rem; margin: 0;"><strong style="color: #c9d1d9;">All three are now in the 19-database catalog.</strong> Find them in the cards below or use normal Python and R package discovery. Their immutable direct URLs remain available on the dataset pages.</p>
 </div>
       <div style="border: 1px solid #30363d; border-radius: 8px; padding: 1.25rem 1.5rem; max-width: 800px; margin-bottom: 1rem;">
         <div style="color: #8b949e; font-size: 0.85rem; margin-bottom: 0.4rem;">September 17, 2026</div>
@@ -894,7 +894,7 @@
           linksHtml += '<a href="' + db.huggingface + '" target="_blank" rel="noopener">Hugging Face</a>';
         }
 
-        var sizeDisplay = (db.size_gb == null) ? '--' : (db.size_gb < 1 ? (db.size_gb * 1000).toFixed(1) + ' MB' : db.size_gb + ' GB');
+        var sizeDisplay = (db.size_gb == null) ? '--' : (db.size_gb < 1 ? (db.size_gb * 1024).toFixed(1) + ' MiB' : db.size_gb + ' GiB');
         var rowCount = db.rows ? formatRows(db.rows) : '--';
         var tableCount = db.tables || '--';
 
